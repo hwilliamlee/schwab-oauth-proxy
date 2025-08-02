@@ -1,13 +1,12 @@
 const express = require('express');
 const axios = require('axios');
-const open = require('open');
 const app = express();
 const port = 5000;
 
 // Replace these with your real Schwab keys
-const client_id = 'YOUR_CLIENT_ID';
-const client_secret = 'YOUR_CLIENT_SECRET';
-const redirect_uri = 'https://schwab-oauth-proxy-williamlee72.replit.app/callback';
+const client_id = 'COgVGpekfWOBdGjHGLZuGbYZ78K9ovBS';
+const client_secret = 'jNnttAO5mUBMREtr';
+const redirect_uri = 'https://schwab-oauth-proxy.onrender.com/callback'; // <- Update this if needed!
 
 let access_token = null;
 
@@ -47,5 +46,4 @@ app.get('/callback', async (req, res) => {
 
 app.listen(port, () => {
   console.log(`OAuth proxy listening at http://localhost:${port}`);
-  open(`http://localhost:${port}/auth`);
 });
