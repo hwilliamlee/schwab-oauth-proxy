@@ -14,9 +14,9 @@ app.get('/', (req, res) => {
   res.send('✅ Schwab OAuth Proxy is running');
 });
 
-// ✅ UPDATED /auth route with @SCHWAB suffix
+// ✅ /auth route — NO @SCHWAB in client_id
 app.get('/auth', (req, res) => {
-  const authUrl = `https://api.schwabapi.com/v1/oauth2/authorize?response_type=code&client_id=${client_id}@SCHWAB&redirect_uri=${redirect_uri}&scope=read`;
+  const authUrl = `https://api.schwabapi.com/v1/oauth2/authorize?response_type=code&client_id=${client_id}&redirect_uri=${redirect_uri}&scope=read`;
   res.redirect(authUrl);
 });
 
