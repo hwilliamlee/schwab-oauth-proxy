@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
   res.send('✅ Schwab OAuth Proxy is running');
 });
 
-// ✅ Append @SCHWAB for authorization only
+// ✅ Use @SCHWAB suffix only for /auth route
 app.get('/auth', (req, res) => {
   const client_id_with_suffix = `${client_id}@SCHWAB`;
   const authUrl = `https://api.schwabapi.com/v1/oauth2/authorize?response_type=code&client_id=${client_id_with_suffix}&redirect_uri=${redirect_uri}&scope=read`;
@@ -32,7 +32,7 @@ app.get('/callback', async (req, res) => {
         grant_type: 'authorization_code',
         code,
         redirect_uri,
-        client_id, // ✅ DO NOT include @SCHWAB here
+        client_id, // ✅ No @SCHWAB here
         client_secret,
       },
       headers: {
@@ -41,6 +41,7 @@ app.get('/callback', async (req, res) => {
     });
 
     access_token = tokenRes.data.access_token;
+    console.log('✅ Access Token:', access_token);
     res.send('✅ Authorization successful! You may close this tab.');
   } catch (error) {
     console.error('❌ Token exchange failed:', error.response?.data || error.message);
