@@ -3,23 +3,25 @@ const axios = require('axios');
 const app = express();
 const port = 5000;
 
-const client_id = 'COgVGpekfWOBdGjHGLZuGbYZ78K9ovBS'; // Your Schwab client ID
-const client_secret = 'jNnttAO5mUBMREtr'; // Your Schwab secret
+// ✅ Schwab OAuth credentials
+const client_id = 'COgVGpekfWOBdGjHGLZuGbYZ78K9ovBS'; // Do NOT include @SCHWAB here
+const client_secret = 'jNnttAO5mUBMREtr';
 const redirect_uri = 'https://schwab-oauth-proxy.onrender.com/callback';
 
 let access_token = null;
 
+// ✅ Health check
 app.get('/', (req, res) => {
   res.send('✅ Schwab OAuth Proxy is running');
 });
 
-// Correct authorize URL and @SCHWAB suffix
+// ✅ Auth redirect - use @SCHWAB only in this route
 app.get('/auth', (req, res) => {
   const authUrl = `https://api.schwabapi.com/v1/oauth/authorize?response_type=code&client_id=${client_id}@SCHWAB&redirect_uri=${redirect_uri}&scope=read`;
   res.redirect(authUrl);
 });
 
-// Token exchange
+// ✅ Token exchange (no @SCHWAB in client_id here)
 app.get('/callback', async (req, res) => {
   const { code } = req.query;
   console.log('🔑 Received code:', code);
