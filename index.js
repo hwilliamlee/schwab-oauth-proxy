@@ -14,8 +14,10 @@ app.get('/', (req, res) => {
   res.send('✅ Schwab OAuth Proxy is running');
 });
 
+// ✅ /auth route — adds @SCHWAB to client_id ONLY for the auth redirect
 app.get('/auth', (req, res) => {
-  const authUrl = `https://api.schwabapi.com/v1/oauth2/authorize?response_type=code&client_id=${client_id}&redirect_uri=${redirect_uri}&scope=read`;
+  const clientIdWithSuffix = `${client_id}@SCHWAB`;
+  const authUrl = `https://api.schwabapi.com/v1/oauth2/authorize?response_type=code&client_id=${clientIdWithSuffix}&redirect_uri=${redirect_uri}&scope=read`;
   res.redirect(authUrl);
 });
 
@@ -31,7 +33,7 @@ app.get('/callback', async (req, res) => {
         grant_type: 'authorization_code',
         code,
         redirect_uri,
-        client_id,
+        client_id,       // ✅ NO @SCHWAB here!
         client_secret,
       },
       headers: {
