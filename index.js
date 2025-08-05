@@ -6,7 +6,7 @@ const port = 5000;
 // Replace these with your real Schwab keys
 const client_id = 'COgVGpekfWOBdGjHGLZuGbYZ78K9ovBS';
 const client_secret = 'jNnttAO5mUBMREtr';
-const redirect_uri = 'https://schwab-oauth-proxy.onrender.com/callback'; // <- Update this if needed!
+const redirect_uri = 'https://schwab-oauth-proxy.onrender.com/callback';
 
 let access_token = null;
 
@@ -14,8 +14,9 @@ app.get('/', (req, res) => {
   res.send('✅ Schwab OAuth Proxy is running');
 });
 
+// ✅ UPDATED /auth route with @SCHWAB suffix
 app.get('/auth', (req, res) => {
-  const authUrl = `https://api.schwabapi.com/v1/oauth2/authorize?response_type=code&client_id=${client_id}&redirect_uri=${redirect_uri}&scope=read`;
+  const authUrl = `https://api.schwabapi.com/v1/oauth2/authorize?response_type=code&client_id=${client_id}@SCHWAB&redirect_uri=${redirect_uri}&scope=read`;
   res.redirect(authUrl);
 });
 
