@@ -3,8 +3,7 @@ const axios = require('axios');
 const app = express();
 const port = 5000;
 
-// Replace these with your real Schwab keys
-const client_id = 'COgVGpekfWOBdGjHGLZuGbYZ78K9ovBS';
+const client_id = 'COgVGpekfWOBdGjHGLZuGbYZ78K9ovBS'; // No @SCHWAB!
 const client_secret = 'jNnttAO5mUBMREtr';
 const redirect_uri = 'https://schwab-oauth-proxy.onrender.com/callback';
 
@@ -14,16 +13,13 @@ app.get('/', (req, res) => {
   res.send('✅ Schwab OAuth Proxy is running');
 });
 
-// ✅ Use @SCHWAB suffix only for /auth route
 app.get('/auth', (req, res) => {
-  const client_id_with_suffix = `${client_id}@SCHWAB`;
-  const authUrl = `https://api.schwabapi.com/v1/oauth2/authorize?response_type=code&client_id=${client_id_with_suffix}&redirect_uri=${redirect_uri}&scope=read`;
+  const authUrl = `https://api.schwabapi.com/v1/oauth2/authorize?response_type=code&client_id=${client_id}&redirect_uri=${redirect_uri}&scope=read`;
   res.redirect(authUrl);
 });
 
 app.get('/callback', async (req, res) => {
   const { code } = req.query;
-
   console.log('🔍 Received authorization code:', code);
 
   try {
@@ -32,16 +28,16 @@ app.get('/callback', async (req, res) => {
         grant_type: 'authorization_code',
         code,
         redirect_uri,
-        client_id, // ✅ No @SCHWAB here
+        client_id,       // NO @SCHWAB here either
         client_secret,
       },
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
     });
 
     access_token = tokenRes.data.access_token;
-    console.log('✅ Access Token:', access_token);
+    console.log('✅ Token received:', access_token);
     res.send('✅ Authorization successful! You may close this tab.');
   } catch (error) {
     console.error('❌ Token exchange failed:', error.response?.data || error.message);
